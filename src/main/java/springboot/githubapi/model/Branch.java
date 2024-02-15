@@ -3,7 +3,7 @@ package springboot.githubapi.model;
 public class Branch {
 
     String name;
-    String lastCommitSha;
+    Commit commit;
 
     public Branch() {
     }
@@ -16,11 +16,11 @@ public class Branch {
         this.name = name;
     }
 
-    public String getLastCommitSha() {
-        return lastCommitSha;
+    public Commit getCommit() {
+        return commit;
     }
 
-    public void setLastCommitSha(String lastCommitSha) {
-        this.lastCommitSha = lastCommitSha;
+    public void setCommit(Commit commit) {
+        this.commit = commit;
     }
 }
