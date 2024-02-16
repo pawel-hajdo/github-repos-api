@@ -8,7 +8,6 @@ public class Repo {
 
     private String name;
     private Owner owner;
-    @JsonIgnore
     private Boolean fork;
     private List<Branch> branches;
 
@@ -23,6 +22,7 @@ public class Repo {
         this.name = name;
     }
 
+    @JsonIgnore
     public Boolean getFork() {
         return fork;
     }
@@ -31,19 +31,19 @@ public class Repo {
         this.fork = fork;
     }
 
-    public List<Branch> getBranchList() {
-        return branches;
-    }
-
-    public void setBranchList(List<Branch> branches) {
-        this.branches = branches;
-    }
-
     public Owner getOwner() {
         return owner;
     }
 
     public void setOwner(Owner owner) {
         this.owner = owner;
+    }
+
+    public List<Branch> getBranches() {
+        return branches;
+    }
+
+    public void setBranches(List<Branch> branches) {
+        this.branches = branches;
     }
 }

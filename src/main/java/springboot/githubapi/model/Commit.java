@@ -3,7 +3,6 @@ package springboot.githubapi.model;
 public class Commit {
 
     String sha;
-    String url;
 
     public Commit() {
     }
@@ -14,13 +13,5 @@ public class Commit {
 
     public void setSha(String sha) {
         this.sha = sha;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 }

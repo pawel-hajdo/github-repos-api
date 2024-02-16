@@ -8,28 +8,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.reactive.function.client.WebClientException;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
-import springboot.githubapi.model.Repo;
-
-import java.util.List;
 
 @Controller
 @RequestMapping(path = "/api")
-public class UserController {
+public class MainController {
 
     private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
-    public UserController(UserService userService) {
+    private final Logger logger = LoggerFactory.getLogger(MainController.class);
+    public MainController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping(path = "/{userName}")
     public ResponseEntity<?> getUserRepos(@PathVariable String userName){
         try {
-            List<Repo> userRepos = List.of(userService.getUserRepos(userName));
-            return ResponseEntity.ok(userRepos);
+            return ResponseEntity.ok(userService.getUserRepos(userName));
         } catch (WebClientResponseException e) {
             logger.info(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), "User not found"));

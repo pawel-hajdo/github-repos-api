@@ -2,8 +2,11 @@ package springboot.githubapi;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import springboot.githubapi.model.Branch;
 import springboot.githubapi.model.Repo;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -14,12 +17,27 @@ public class UserService {
         this.webClient = webClientBuilder.baseUrl("https://api.github.com/").build();
     }
 
-    public Repo[] getUserRepos(String name) {
+    public Mono<List<Repo>> getUserRepos(String userName) {
         return webClient
                 .get()
-                .uri("users/{userName}/repos", name)
+                .uri("users/{userName}/repos", userName)
                 .retrieve()
-                .bodyToMono(Repo[].class)
-                .block();
+                .bodyToFlux(Repo.class)
+                .filter(repo -> !repo.getFork())
+                .flatMap(repo -> addBranchesToRepo(userName, repo))
+                .collectList();
+    }
+
+    private Mono<Repo> addBranchesToRepo(String userName, Repo repo) {
+        return webClient
+                .get()
+                .uri("repos/{userName}/{repoName}/branches", userName, repo.getName())
+                .retrieve()
+                .bodyToFlux(Branch.class)
+                .collectList()
+                .map(branches -> {
+                    repo.setBranches(branches);
+                    return repo;
+                });
     }
 }
