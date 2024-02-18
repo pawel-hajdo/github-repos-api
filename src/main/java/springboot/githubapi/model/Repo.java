@@ -1,6 +1,7 @@
 package springboot.githubapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ public class Repo {
 
     private String name;
     private Owner owner;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean fork;
     private List<Branch> branches;
 
