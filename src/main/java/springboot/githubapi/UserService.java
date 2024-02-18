@@ -17,7 +17,7 @@ public class UserService {
         this.webClient = webClientBuilder.baseUrl("https://api.github.com/").build();
     }
 
-    public Mono<List<Repo>> getUserRepos(String userName) {
+    public List<Repo> getUserRepos(String userName) {
         return webClient
                 .get()
                 .uri("users/{userName}/repos", userName)
@@ -25,7 +25,8 @@ public class UserService {
                 .bodyToFlux(Repo.class)
                 .filter(repo -> !repo.getFork())
                 .flatMap(repo -> addBranchesToRepo(userName, repo))
-                .collectList();
+                .collectList()
+                .block();
     }
 
     private Mono<Repo> addBranchesToRepo(String userName, Repo repo) {
